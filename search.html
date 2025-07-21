@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深度搜索 - 校园AI助手</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">🎓 校园AI助手</a>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">首页</a>
+                <a href="chat.html" class="nav-link">AI指导</a>
+                <a href="assessment.html" class="nav-link">能力评估</a>
+                <a href="planning.html" class="nav-link">目标规划</a>
+                <a href="prediction.html" class="nav-link">轨迹预测</a>
+                <a href="search.html" class="nav-link active">深度搜索</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main class="main-content">
+        <div class="container">
+            <!-- 页面标题 -->
+            <div class="page-header">
+                <h1>🔍 深度搜索</h1>
+                <p>智能搜索引擎，支持普通搜索和学术论文搜索，为您提供精准的信息检索服务</p>
+            </div>
+
+            <!-- 搜索模式选择 -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>🎛️ 搜索模式</h2>
+                    <p>选择适合您需求的搜索模式</p>
+                </div>
+                <div class="card-body">
+                    <div class="search-mode-selector">
+                        <div class="mode-option">
+                            <input type="radio" id="generalMode" name="searchMode" value="general" checked>
+                            <label for="generalMode" class="mode-label">
+                                <div class="mode-icon">🌐</div>
+                                <div class="mode-info">
+                                    <h3>普通AI搜索</h3>
+                                    <p>适用于日常信息查询、学习资料搜索、生活问题解答等</p>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="mode-option">
+                            <input type="radio" id="paperMode" name="searchMode" value="paper">
+                            <label for="paperMode" class="mode-label">
+                                <div class="mode-icon">📚</div>
+                                <div class="mode-info">
+                                    <h3>学术论文搜索</h3>
+                                    <p>专门用于学术研究、论文查找、专业文献检索等</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 搜索界面 -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 id="searchTitle">🔍 普通AI搜索</h2>
+                    <p id="searchDescription">输入您想要搜索的内容，AI将为您提供精准的答案</p>
+                </div>
+                <div class="card-body">
+                    <div class="search-container">
+                        <div class="search-input-group">
+                            <textarea 
+                                id="searchInput" 
+                                placeholder="请输入您想要搜索的问题或关键词..."
+                                rows="3"
+                            ></textarea>
+                            <button id="searchBtn" class="btn btn-primary">
+                                🔍 开始搜索
+                            </button>
+                        </div>
+                        <div class="search-options">
+                            <span class="char-count">
+                                <span id="charCount">0</span>/1000
+                            </span>
+                            <button id="clearSearchBtn" class="btn btn-secondary btn-sm">
+                                🗑️ 清空
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 搜索结果 -->
+            <div id="searchResults" class="card" style="display: none;">
+                <div class="card-header">
+                    <h2>📋 搜索结果</h2>
+                    <p id="searchResultsDescription">AI为您找到的相关信息</p>
+                    <div class="card-actions">
+                        <button id="exportMarkdownBtn" class="btn btn-success">📄 导出Markdown</button>
+                        <button id="newSearchBtn" class="btn btn-secondary">🔍 新搜索</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="resultsContent" class="results-content">
+                        <!-- 搜索结果将在这里显示 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 搜索历史 -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>📚 搜索历史</h2>
+                    <p>查看之前的搜索记录和结果</p>
+                    <div class="card-actions">
+                        <button id="refreshHistoryBtn" class="btn btn-secondary">🔄 刷新</button>
+                        <button id="clearHistoryBtn" class="btn btn-danger">🗑️ 清空</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="searchHistory" class="search-history">
+                        <div class="empty-state">
+                            <p>📝 暂无搜索历史</p>
+                            <p>开始第一次搜索后，这里将显示历史记录</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 快捷搜索 -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>⚡ 快捷搜索</h2>
+                    <p>常用搜索模板，点击快速开始搜索</p>
+                </div>
+                <div class="card-body">
+                    <div class="quick-search-grid">
+                        <div class="quick-search-category">
+                            <h3>📚 学习相关</h3>
+                            <div class="quick-search-items">
+                                <button class="quick-search-btn" data-query="如何提高学习效率的方法">学习效率提升</button>
+                                <button class="quick-search-btn" data-query="大学生时间管理技巧">时间管理技巧</button>
+                                <button class="quick-search-btn" data-query="考研复习计划制定">考研复习规划</button>
+                                <button class="quick-search-btn" data-query="英语学习方法总结">英语学习方法</button>
+                            </div>
+                        </div>
+                        
+                        <div class="quick-search-category">
+                            <h3>💼 职业发展</h3>
+                            <div class="quick-search-items">
+                                <button class="quick-search-btn" data-query="大学生职业规划指导">职业规划指导</button>
+                                <button class="quick-search-btn" data-query="简历制作技巧和模板">简历制作技巧</button>
+                                <button class="quick-search-btn" data-query="面试技巧和注意事项">面试技巧指南</button>
+                                <button class="quick-search-btn" data-query="实习经验分享">实习经验分享</button>
+                            </div>
+                        </div>
+                        
+                        <div class="quick-search-category">
+                            <h3>🔬 学术研究</h3>
+                            <div class="quick-search-items">
+                                <button class="quick-search-btn" data-query="论文写作规范和技巧">论文写作技巧</button>
+                                <button class="quick-search-btn" data-query="文献检索方法">文献检索方法</button>
+                                <button class="quick-search-btn" data-query="学术会议投稿指南">学术会议投稿</button>
+                                <button class="quick-search-btn" data-query="研究方法论介绍">研究方法论</button>
+                            </div>
+                        </div>
+                        
+                        <div class="quick-search-category">
+                            <h3>🌟 个人成长</h3>
+                            <div class="quick-search-items">
+                                <button class="quick-search-btn" data-query="大学生心理健康维护">心理健康维护</button>
+                                <button class="quick-search-btn" data-query="人际关系处理技巧">人际关系技巧</button>
+                                <button class="quick-search-btn" data-query="自我管理能力提升">自我管理提升</button>
+                                <button class="quick-search-btn" data-query="创新思维培养方法">创新思维培养</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 使用指南 -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>💡 使用指南</h2>
+                    <p>如何更好地使用深度搜索功能</p>
+                </div>
+                <div class="card-body">
+                    <div class="guide-horizontal">
+                        <div class="guide-section">
+                            <h3>🔍 搜索技巧</h3>
+                            <ul>
+                                <li>使用具体关键词</li>
+                                <li>提供充分背景信息</li>
+                                <li>复杂问题分步搜索</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="guide-section">
+                            <h3>📚 模式选择</h3>
+                            <ul>
+                                <li>普通搜索：日常学习生活</li>
+                                <li>论文搜索：学术研究文献</li>
+                                <li>智能推荐结果筛选</li>
+                            </ul>
+                        </div>
+
+                        <div class="guide-section">
+                            <h3>⚠️ 注意事项</h3>
+                            <ul>
+                                <li>结果仅供参考</li>
+                                <li>注意文献时效性</li>
+                                <li>咨询专业领域专家</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 脚本文件 -->
+    <script src="js/config.js"></script>
+    <script src="js/search.js"></script>
+</body>
+</html>
+

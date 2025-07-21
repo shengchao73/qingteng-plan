@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI智能对话 - 校园AI助手</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <meta name="description" content="与AI助手进行自然对话，获得学习和生活建议">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">🎓 校园AI助手</a>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">首页</a>
+                <a href="chat.html" class="nav-link">AI指导</a>
+                <a href="assessment.html" class="nav-link">能力评估</a>
+                <a href="planning.html" class="nav-link">目标规划</a>
+                <a href="prediction.html" class="nav-link">轨迹预测</a>
+                <a href="search.html" class="nav-link">深度搜索</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容区域 -->
+    <div class="container">
+        <div class="main-content">
+            <h1>💬 AI智能对话</h1>
+            <p class="text-center" style="color: #666; margin-bottom: 30px;">
+                与AI助手进行自然对话，获得个性化的学习建议和生活指导
+            </p>
+
+            <!-- 对话管理区域 -->
+            <div class="grid grid-2 mb-20">
+                <!-- 对话历史列表 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">📚 对话历史</h3>
+                        <p class="card-description">点击历史对话可以继续之前的会话</p>
+                    </div>
+                    <div id="chat-history-list" class="chat-history-container">
+                        <!-- 对话历史将在这里动态加载 -->
+                    </div>
+                    <div class="mt-20">
+                        <button class="btn btn-outline w-full" onclick="startNewChat()">
+                            ➕ 开始新对话
+                        </button>
+                        <button class="btn btn-secondary w-full mt-10" onclick="clearAllChats()">
+                            🗑️ 清空历史
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 对话状态信息 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">📊 对话状态</h3>
+                        <p class="card-description">当前对话的基本信息</p>
+                    </div>
+                    <div id="chat-status-info">
+                        <div class="status-item">
+                            <strong>当前对话ID：</strong>
+                            <span id="current-chat-id">未开始</span>
+                        </div>
+                        <div class="status-item">
+                            <strong>消息数量：</strong>
+                            <span id="message-count">0</span>
+                        </div>
+                        <div class="status-item">
+                            <strong>API状态：</strong>
+                            <span id="api-status">
+                                <span class="status-indicator status-offline"></span>
+                                未连接
+                            </span>
+                        </div>
+                        <div class="status-item">
+                            <strong>开始时间：</strong>
+                            <span id="chat-start-time">-</span>
+                        </div>
+                    </div>
+                    <div class="mt-20">
+                        <button class="btn btn-outline w-full" onclick="exportCurrentChat()">
+                            📤 导出对话
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 主对话区域 -->
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="flex-center">
+                        <span id="chat-title">🤖 AI助手对话</span>
+                        <div style="margin-left: auto;">
+                            <span id="connection-status" class="status-indicator status-offline"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="chat-messages" class="chat-messages">
+                    <!-- 欢迎消息 -->
+                    <div class="message ai">
+                        <div class="message-header">
+                            <strong>🤖 AI助手</strong>
+                            <span class="message-time" id="welcome-time"></span>
+                        </div>
+                        <div class="message-content">
+                            您好！我是校园AI助手，很高兴为您服务！🎓<br><br>
+                            我可以帮助您：<br>
+                            • 解答学习和生活中的问题<br>
+                            • 提供个性化的建议和指导<br>
+                            • 协助制定学习计划<br>
+                            • 分析和讨论各种话题<br><br>
+                            请随时告诉我您想了解什么，我会尽力为您提供帮助！
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-input-container">
+                    <textarea 
+                        id="chat-input" 
+                        class="chat-input" 
+                        placeholder="请输入您的问题或想法..."
+                        rows="1"
+                        maxlength="2000"
+                    ></textarea>
+                    <button id="send-button" class="chat-send-btn" onclick="sendMessage()">
+                        发送
+                    </button>
+                </div>
+                
+                <!-- 输入提示 -->
+                <div class="text-center mt-10" style="color: #666; font-size: 14px;">
+                    <span id="input-counter">0/2000</span> | 
+                    支持 Enter 快速发送 | 
+                    <span id="typing-indicator" class="hidden">AI正在思考中...</span>
+                </div>
+            </div>
+
+            <!-- 快捷问题建议 -->
+            <div class="card mt-20">
+                <div class="card-header">
+                    <h3 class="card-title">💡 快捷问题</h3>
+                    <p class="card-description">点击下方问题快速开始对话</p>
+                </div>
+                <div class="grid grid-3">
+                    <button class="btn btn-outline" onclick="sendQuickQuestion('我想了解如何制定有效的学习计划')">
+                        📅 学习计划制定
+                    </button>
+                    <button class="btn btn-outline" onclick="sendQuickQuestion('请帮我分析一下我的学习方法是否有效')">
+                        📊 学习方法分析
+                    </button>
+                    <button class="btn btn-outline" onclick="sendQuickQuestion('我在时间管理方面遇到了困难，有什么建议吗？')">
+                        ⏰ 时间管理建议
+                    </button>
+                    <button class="btn btn-outline" onclick="sendQuickQuestion('如何提高学习效率和专注力？')">
+                        🎯 效率提升
+                    </button>
+                    <button class="btn btn-outline" onclick="sendQuickQuestion('我对未来的职业规划感到迷茫，能给些建议吗？')">
+                        🚀 职业规划
+                    </button>
+                    <button class="btn btn-outline" onclick="sendQuickQuestion('如何平衡学习和生活，避免过度焦虑？')">
+                        ⚖️ 学习生活平衡
+                    </button>
+                </div>
+            </div>
+
+            <!-- 使用提示 -->
+            <div class="alert alert-info mt-20">
+                <h4>💡 使用提示</h4>
+                <div class="grid grid-2">
+                    <div>
+                        <p><strong>🔄 流式输出：</strong>AI回复会实时显示，无需等待完整响应</p>
+                        <p><strong>💾 自动保存：</strong>所有对话都会自动保存到本地</p>
+                    </div>
+                    <div>
+                        <p><strong>📱 快捷键：</strong>使用 Enter 快速发送消息</p>
+                        <p><strong>📤 导出功能：</strong>可以导出对话记录为文本文件</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入JavaScript文件 -->
+    <script src="js/config.js"></script>
+    <script src="js/chat.js"></script>
+</body>
+</html>
+

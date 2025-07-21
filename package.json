@@ -1,0 +1,80 @@
+{
+  "name": "campus-ai-assistant",
+  "version": "1.0.0",
+  "description": "基于星辰Agent工作流的校园AI助手",
+  "main": "main.js",
+  "bin": "proxy-server.js",
+  "homepage": "./",
+  "scripts": {
+    "start": "node proxy-server.js",
+    "electron": "electron .",
+    "electron-dev": "NODE_ENV=development electron .",
+    "build": "pkg . --out-path=./dist",
+    "build-win": "pkg . --targets=node18-win-x64 --out-path=./dist",
+    "build-all": "pkg . --targets=node18-win-x64,node18-macos-x64,node18-linux-x64 --out-path=./dist",
+    "electron-pack": "electron-builder",
+    "electron-build": "electron-builder --win",
+    "electron-build-all": "electron-builder --win --mac --linux",
+    "package-win": "electron-packager . --platform=win32 --arch=x64 --out=electron-dist --overwrite"
+  },
+  "keywords": [
+    "ai",
+    "assistant",
+    "campus",
+    "education",
+    "planning",
+    "electron",
+    "desktop"
+  ],
+  "author": "Campus AI Team",
+  "license": "MIT",
+  "build": {
+    "appId": "com.campus.ai.assistant",
+    "productName": "校园AI助手",
+    "directories": {
+      "output": "electron-dist"
+    },
+    "files": [
+      "**/*",
+      "!node_modules/**/*",
+      "!electron-dist/**/*",
+      "!dist/**/*",
+      "!.git/**/*"
+    ],
+    "win": {
+      "target": {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      }
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "pkg": {
+    "targets": [
+      "node18-win-x64"
+    ],
+    "outputPath": "./dist",
+    "assets": [
+      "**/*.html",
+      "**/*.css",
+      "**/*.js",
+      "**/*.md",
+      "assets/**/*",
+      "css/**/*",
+      "js/**/*",
+      "docs/**/*"
+    ]
+  },
+  "devDependencies": {
+    "electron": "^37.2.2",
+    "electron-builder": "^26.0.12",
+    "electron-packager": "^17.1.2",
+    "pkg": "^5.8.1"
+  }
+}

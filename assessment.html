@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>能力评估分析 - 校园AI助手</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <meta name="description" content="通过AI对话量化分析您的技能水平和能力特征">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">🎓 校园AI助手</a>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">首页</a>
+                <a href="chat.html" class="nav-link">AI指导</a>
+                <a href="assessment.html" class="nav-link">能力评估</a>
+                <a href="planning.html" class="nav-link">目标规划</a>
+                <a href="prediction.html" class="nav-link">轨迹预测</a>
+                <a href="search.html" class="nav-link">深度搜索</a>
+            </div>
+        </div>
+    </nav>
+    <!-- 主要内容区域 -->
+    <div class="container">
+        <div class="main-content">
+            <h1>📊 能力评估分析</h1>
+            <p class="text-center" style="color: #666; margin-bottom: 30px;">
+                通过AI对话量化分析您的技能水平和能力特征，为个性化学习规划提供科学依据
+            </p>
+
+            <!-- 评估状态和结果展示 -->
+            <div class="grid grid-2 mb-20">
+                <!-- 评估进度 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">📈 评估进度</h3>
+                        <p class="card-description">当前评估的进展情况</p>
+                    </div>
+                    <div id="assessment-progress">
+                        <div class="progress-item">
+                            <strong>评估状态：</strong>
+                            <span id="assessment-status">未开始</span>
+                        </div>
+                        <div class="progress-item">
+                            <strong>对话轮数：</strong>
+                            <span id="conversation-rounds">0</span>
+                        </div>
+                        <div class="progress-item">
+                            <strong>完成度：</strong>
+                            <span id="completion-rate">0%</span>
+                        </div>
+                        <div class="progress-item">
+                            <strong>评估时长：</strong>
+                            <span id="assessment-duration">0分钟</span>
+                        </div>
+                    </div>
+                    <div class="mt-20">
+                        <button class="btn btn-outline w-full" onclick="startNewAssessment()">
+                            🔄 重新开始评估
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 能力分析结果 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">🎯 能力分析结果</h3>
+                        <p class="card-description">实时更新的能力评估数据</p>
+                    </div>
+                    <div id="ability-analysis">
+                        <div id="assessment-result-display">
+                            <div class="text-center" style="color: #666; padding: 20px;">
+                                <p>📋 暂无评估结果</p>
+                                <p style="font-size: 14px;">开始对话评估后，这里将显示您的能力分析数据</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-20">
+                        <button class="btn btn-secondary w-full" onclick="exportAssessmentResult()">
+                            📤 导出评估报告
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 评估对话区域 -->
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="flex-center">
+                        <span>🤖 能力评估助手</span>
+                        <div style="margin-left: auto;">
+                            <span id="assessment-connection-status" class="status-indicator status-offline"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="assessment-chat-messages" class="chat-messages">
+                    <!-- 欢迎消息 -->
+                    <div class="message ai">
+                        <div class="message-header">
+                            <strong>🤖 评估助手</strong>
+                            <span class="message-time" id="assessment-welcome-time"></span>
+                        </div>
+                        <div class="message-content">
+                            欢迎来到能力评估模块！🎯<br><br>
+                            我将通过一系列对话来了解和分析您的能力特征，包括：<br>
+                            • 📚 学习能力和知识结构<br>
+                            • 🧠 思维方式和解决问题的能力<br>
+                            • 💪 技能水平和专业特长<br>
+                            • 🎨 创新能力和适应性<br>
+                            • 🤝 沟通协作和领导力<br><br>
+                            评估过程大约需要10-15分钟，请如实回答问题。让我们开始吧！<br><br>
+                            <strong>首先，请简单介绍一下您的基本情况，比如专业背景、学习经历或感兴趣的领域？</strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-input-container">
+                    <textarea 
+                        id="assessment-chat-input" 
+                        class="chat-input" 
+                        placeholder="请详细描述您的情况，这将帮助我更好地评估您的能力..."
+                        rows="2"
+                        maxlength="3000"
+                    ></textarea>
+                    <button id="assessment-send-button" class="chat-send-btn" onclick="sendAssessmentMessage()">
+                        发送
+                    </button>
+                </div>
+                
+                <!-- 输入提示 -->
+                <div class="text-center mt-10" style="color: #666; font-size: 14px;">
+                    <span id="assessment-input-counter">0/3000</span> | 
+                    支持 Enter 快速发送 | 
+                    <span id="assessment-typing-indicator" class="hidden">AI正在分析中...</span>
+                </div>
+            </div>
+
+            <!-- 评估指导 -->
+            <div class="card mt-20">
+                <div class="card-header">
+                    <h3 class="card-title">💡 评估指导</h3>
+                    <p class="card-description">如何获得更准确的评估结果</p>
+                </div>
+                <div class="grid grid-2">
+                    <div>
+                        <h4>📝 回答建议</h4>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li>尽量详细和具体地描述您的经历</li>
+                            <li>提供真实的学习和工作案例</li>
+                            <li>分享您遇到的挑战和解决方法</li>
+                            <li>说明您的兴趣爱好和特长领域</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>🎯 评估维度</h4>
+                        <ul style="margin-left: 20px; line-height: 1.8;">
+                            <li><strong>认知能力：</strong>逻辑思维、分析判断</li>
+                            <li><strong>学习能力：</strong>知识吸收、技能掌握</li>
+                            <li><strong>创新能力：</strong>创意思维、问题解决</li>
+                            <li><strong>社交能力：</strong>沟通表达、团队协作</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 评估历史 -->
+            <div class="card mt-20">
+                <div class="card-header">
+                    <h3 class="card-title">📚 评估历史</h3>
+                    <p class="card-description">查看之前的评估记录和结果对比</p>
+                </div>
+                <div id="assessment-history-list">
+                    <!-- 评估历史将在这里动态加载 -->
+                </div>
+                <div class="mt-20">
+                    <button class="btn btn-outline" onclick="loadAssessmentHistory()">
+                        🔄 刷新历史记录
+                    </button>
+                    <button class="btn btn-secondary ml-10" onclick="clearAssessmentHistory()">
+                        🗑️ 清空历史
+                    </button>
+                </div>
+            </div>
+
+            <!-- 使用说明 -->
+            <div class="alert alert-info mt-20">
+                <h4>ℹ️ 重要说明</h4>
+                <div class="grid grid-2">
+                    <div>
+                        <p><strong>🔒 隐私保护：</strong>所有评估数据仅保存在您的本地设备</p>
+                        <p><strong>📊 数据用途：</strong>评估结果将用于个性化学习规划推荐</p>
+                    </div>
+                    <div>
+                        <p><strong>⏱️ 评估时长：</strong>建议预留15-20分钟完成完整评估</p>
+                        <p><strong>🔄 重复评估：</strong>可以定期重新评估以跟踪能力发展</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入JavaScript文件 -->
+    <script src="js/config.js"></script>
+    <script src="js/assessment.js"></script>
+</body>
+</html>
+

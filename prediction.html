@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人生发展预测 - 校园AI助手</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">🎓 校园AI助手</a>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">首页</a>
+                <a href="chat.html" class="nav-link">AI指导</a>
+                <a href="assessment.html" class="nav-link">能力评估</a>
+                <a href="planning.html" class="nav-link">目标规划</a>
+                <a href="prediction.html" class="nav-link">轨迹预测</a>
+                <a href="search.html" class="nav-link">深度搜索</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main class="main-content">
+        <div class="container">
+            <!-- 页面标题 -->
+            <div class="page-header">
+                <h1>🔮 人生轨迹预测</h1>
+                <p>通过不同维度的问卷调查分析影响人生发展的多元因素，为您的未来规划提供参考</p>
+            </div>
+
+            <!-- 问卷进度 -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>📊 问卷进度</h2>
+                    <p>当前问卷完成情况</p>
+                </div>
+                <div class="card-body">
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span id="progressText">0/61 题</span>
+                            <span id="progressPercent">0%</span>
+                        </div>
+                    </div>
+                    <div class="progress-actions">
+                        <button id="startQuestionnaireBtn" class="btn btn-primary">🚀 开始问卷</button>
+                        <button id="continueQuestionnaireBtn" class="btn btn-secondary" style="display: none;">▶️ 继续问卷</button>
+                        <button id="resetQuestionnaireBtn" class="btn btn-danger" style="display: none;">🔄 重新开始</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 问卷内容 -->
+            <div id="questionnaireContainer" class="card" style="display: none;">
+                <div class="card-header">
+                    <h2 id="questionTitle">问卷调查</h2>
+                    <p id="questionSubtitle">请根据您的真实情况选择最符合的选项</p>
+                </div>
+                <div class="card-body">
+                    <div id="questionContent" class="question-content">
+                        <!-- 问题内容将在这里动态生成 -->
+                    </div>
+                    <div class="question-actions">
+                        <button id="prevQuestionBtn" class="btn btn-secondary" disabled>⬅️ 上一题</button>
+                        <button id="nextQuestionBtn" class="btn btn-primary" disabled>下一题 ➡️</button>
+                        <button id="submitQuestionnaireBtn" class="btn btn-success" style="display: none;">✅ 提交问卷</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 预测结果 -->
+            <div id="predictionResult" class="card" style="display: none;">
+                <div class="card-header">
+                    <h2>🔮 人生发展预测报告</h2>
+                    <p>基于您的问卷回答生成的个性化分析报告</p>
+                    <div class="card-actions">
+                        <button id="exportReportBtn" class="btn btn-success">📤 导出报告</button>
+                        <button id="retakeQuestionnaireBtn" class="btn btn-secondary">🔄 重新测试</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="reportContent" class="report-content">
+                        <!-- 预测报告内容将在这里显示 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 历史记录 -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>📚 测试历史</h2>
+                    <p>查看之前的测试记录和结果对比</p>
+                    <div class="card-actions">
+                        <button id="refreshHistoryBtn" class="btn btn-secondary">🔄 刷新</button>
+                        <button id="clearHistoryBtn" class="btn btn-danger">🗑️ 清空</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="predictionHistory" class="prediction-history">
+                        <div class="empty-state">
+                            <p>📝 暂无测试历史</p>
+                            <p>完成第一次测试后，这里将显示历史记录</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 问卷说明 -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>💡 问卷说明</h2>
+                    <p>了解问卷设计理念和使用建议</p>
+                </div>
+                <div class="card-body">
+                    <div class="guide-content-compact">
+                        <div class="guide-grid">
+                            <div class="guide-item">
+                                <h3>📋 问卷特色</h3>
+                                <p>基于心理学理论，全面评估个人特质、环境资源等维度，生成个性化预测报告</p>
+                            </div>
+                            <div class="guide-item">
+                                <h3>📝 填写建议</h3>
+                                <p>请真实作答，仔细阅读选项，建议一次性完成测试</p>
+                            </div>
+                            <div class="guide-item">
+                                <h3>⚠️ 重要提醒</h3>
+                                <p>结果仅供参考，个人努力和环境变化会影响实际发展，数据本地保存</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 脚本文件 -->
+    <script src="js/config.js"></script>
+    <script src="js/prediction.js"></script>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>目标规划制定 - 校园AI助手</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">🎓 校园AI助手</a>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">首页</a>
+                <a href="chat.html" class="nav-link">AI指导</a>
+                <a href="assessment.html" class="nav-link">能力评估</a>
+                <a href="planning.html" class="nav-link">目标规划</a>
+                <a href="prediction.html" class="nav-link">轨迹预测</a>
+                <a href="search.html" class="nav-link">深度搜索</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main class="main-content">
+        <div class="container">
+            <!-- 页面标题 -->
+            <div class="page-header">
+                <h1>🎯 目标规划制定</h1>
+                <p>基于能力评估结果，制定个性化的学习和发展计划，输出详细的时间安排表</p>
+            </div>
+
+            <!-- 能力评估检查 -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>📊 能力评估状态检查</h2>
+                    <p>制定规划前需要先完成能力评估</p>
+                </div>
+                <div class="card-body">
+                    <div id="assessmentStatus" class="assessment-status">
+                        <div class="status-item">
+                            <span class="status-label">评估状态：</span>
+                            <span id="statusText" class="status-value">检查中...</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">评估时间：</span>
+                            <span id="assessmentTime" class="status-value">-</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">能力得分：</span>
+                            <span id="assessmentScore" class="status-value">-</span>
+                        </div>
+                    </div>
+                    
+                    <div id="noAssessmentWarning" class="alert alert-warning" style="display: none;">
+                        <strong>⚠️ 提示：</strong> 您还没有完成能力评估，建议先进行评估以获得更准确的规划建议。
+                        <br>
+                        <a href="assessment.html" class="btn btn-primary" style="margin-top: 10px;">
+                            📊 前往能力评估
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 目标规划表单 -->
+            <div class="card planning-form-card">
+                <div class="card-header planning-form-header">
+                    <h2>📝 目标规划表单</h2>
+                    <p>请填写您的目标和偏好，我们将为您制定个性化规划</p>
+                </div>
+                <div class="card-body planning-form-body">
+                    <form id="planningForm" class="planning-form">
+                        <!-- 目标设定 -->
+                        <div class="form-group">
+                            <label for="targetGoal">🎯 主要目标</label>
+                            <textarea 
+                                id="targetGoal" 
+                                name="targetGoal" 
+                                placeholder="请详细描述您想要达成的目标，比如：通过英语六级考试、掌握Python编程、准备考研等..."
+                                rows="3"
+                                required
+                            ></textarea>
+                            <small class="form-help">建议描述具体、可衡量的目标</small>
+                        </div>
+
+                        <!-- 时间框架 -->
+                        <div class="form-group">
+                            <label for="timeFrame">⏰ 时间框架</label>
+                            <select id="timeFrame" name="timeFrame" required>
+                                <option value="">请选择时间框架</option>
+                                <option value="1month">1个月内</option>
+                                <option value="3months">3个月内</option>
+                                <option value="6months">6个月内</option>
+                                <option value="1year">1年内</option>
+                                <option value="2years">2年内</option>
+                                <option value="custom">自定义时间</option>
+                            </select>
+                        </div>
+
+                        <!-- 自定义时间 -->
+                        <div id="customTimeGroup" class="form-group" style="display: none;">
+                            <label for="customTime">📅 自定义时间</label>
+                            <input 
+                                type="text" 
+                                id="customTime" 
+                                name="customTime" 
+                                placeholder="请输入具体的时间要求，如：2024年12月前"
+                            >
+                        </div>
+
+                        <!-- 学习偏好 -->
+                        <div class="form-group">
+                            <label for="learningStyle">📚 学习偏好</label>
+                            <select id="learningStyle" name="learningStyle" required>
+                                <option value="">请选择学习偏好</option>
+                                <option value="theory">理论学习为主</option>
+                                <option value="practice">实践操作为主</option>
+                                <option value="balanced">理论实践并重</option>
+                                <option value="project">项目驱动学习</option>
+                                <option value="social">小组协作学习</option>
+                            </select>
+                        </div>
+
+                        <!-- 难度偏好 -->
+                        <div class="form-group">
+                            <label for="difficulty">💪 难度偏好</label>
+                            <select id="difficulty" name="difficulty" required>
+                                <option value="">请选择难度偏好</option>
+                                <option value="easy">循序渐进，稳步提升</option>
+                                <option value="medium">适中挑战，平衡发展</option>
+                                <option value="hard">高强度训练，快速突破</option>
+                                <option value="adaptive">根据进度自适应调整</option>
+                            </select>
+                        </div>
+
+                        <!-- 时间投入 -->
+                        <div class="form-group">
+                            <label for="timeCommitment">⏱️ 每日时间投入</label>
+                            <select id="timeCommitment" name="timeCommitment" required>
+                                <option value="">请选择每日时间投入</option>
+                                <option value="30min">30分钟以内</option>
+                                <option value="1hour">1小时左右</option>
+                                <option value="2hours">2小时左右</option>
+                                <option value="3hours">3小时以上</option>
+                                <option value="flexible">时间灵活安排</option>
+                            </select>
+                        </div>
+
+                        <!-- 优先级 -->
+                        <div class="form-group">
+                            <label for="priority">🔥 优先级关注</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="priority" value="speed">
+                                    <span>⚡ 学习速度</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="priority" value="depth">
+                                    <span>🔍 学习深度</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="priority" value="breadth">
+                                    <span>🌐 知识广度</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="priority" value="practical">
+                                    <span>🛠️ 实用性</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="priority" value="certification">
+                                    <span>🏆 证书认证</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 额外要求 -->
+                        <div class="form-group">
+                            <label for="additionalRequirements">💭 额外要求</label>
+                            <textarea 
+                                id="additionalRequirements" 
+                                name="additionalRequirements" 
+                                placeholder="请描述任何特殊要求或限制条件，比如：预算限制、设备要求、地理位置等..."
+                                rows="2"
+                            ></textarea>
+                        </div>
+
+                        <!-- 提交按钮 -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary" id="generatePlanBtn">
+                                🚀 生成个性化规划
+                            </button>
+                            <button type="reset" class="btn btn-secondary">
+                                🔄 重置表单
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 规划结果展示 -->
+            <div id="planningResult" class="card" style="display: none;">
+                <div class="card-header">
+                    <h2>📋 个性化学习规划</h2>
+                    <p>基于您的目标和能力评估结果生成的详细规划</p>
+                    <div class="card-actions">
+                        <button id="exportPlanBtn" class="btn btn-success">📤 导出规划</button>
+                        <button id="adjustPlanBtn" class="btn btn-secondary">⚙️ 调整规划</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="planContent" class="plan-content">
+                        <!-- 规划内容将在这里动态生成 -->
+                    </div>
+                    <div id="mermaidContainer" class="mermaid-container" style="display: none;">
+                        <h3>📊 学习路径图</h3>
+                        <div id="mermaidDiagram" class="mermaid-diagram"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 规划历史 -->
+            <div class="card">
+                <div class="card-header">
+                    <h2>📚 规划历史</h2>
+                    <p>查看之前制定的规划和执行情况</p>
+                    <div class="card-actions">
+                        <button id="refreshHistoryBtn" class="btn btn-secondary">🔄 刷新历史</button>
+                        <button id="clearHistoryBtn" class="btn btn-danger">🗑️ 清空历史</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="planningHistory" class="planning-history">
+                        <div class="empty-state">
+                            <p>📝 暂无规划历史</p>
+                            <p>制定第一个规划后，这里将显示历史记录</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 使用指南 -->
+            <div class="card guide-card">
+                <div class="card-header">
+                    <h2>💡 使用指南</h2>
+                    <p>如何制定有效的学习规划</p>
+                </div>
+                <div class="card-body">
+                    <div class="guide-content guide-horizontal">
+                        <div class="guide-section">
+                            <h3>📝 填写建议</h3>
+                            <ul>
+                                <li>目标要具体明确，避免过于宽泛</li>
+                                <li>时间框架要现实可行，不要过于激进</li>
+                                <li>如实选择学习偏好和时间投入</li>
+                                <li>优先级可以多选，但建议不超过3个</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="guide-section">
+                            <h3>🎯 规划特色</h3>
+                            <ul>
+                                <li><strong>个性化：</strong>基于能力评估结果定制</li>
+                                <li><strong>可执行：</strong>提供详细的时间安排表</li>
+                                <li><strong>可调整：</strong>支持根据进度动态调整</li>
+                                <li><strong>可追踪：</strong>记录历史规划和执行情况</li>
+                            </ul>
+                        </div>
+
+                        <div class="guide-section">
+                            <h3>⚠️ 注意事项</h3>
+                            <ul>
+                                <li>建议先完成能力评估以获得更准确的规划</li>
+                                <li>规划生成后可以根据实际情况进行调整</li>
+                                <li>定期回顾和更新规划以保持有效性</li>
+                                <li>所有数据仅保存在本地，保护隐私安全</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 脚本文件 -->
+    <script src="js/config.js"></script>
+    <script src="js/planning.js"></script>
+    <script>
+        // 初始化 mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            themeVariables: {
+                primaryColor: '#3498db',
+                primaryTextColor: '#2c3e50',
+                primaryBorderColor: '#2980b9',
+                lineColor: '#34495e',
+                sectionBkgColor: '#ecf0f1',
+                altSectionBkgColor: '#bdc3c7',
+                gridColor: '#95a5a6',
+                secondaryColor: '#e74c3c',
+                tertiaryColor: '#f39c12'
+            }
+        });
+    </script>
+</body>
+</html>
+
