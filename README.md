@@ -1,4 +1,4 @@
-# 校园AI助手Demo 🎓
+# 青藤计划-校园AI领航员Demo 🎓
 
 <div align="center">
 
